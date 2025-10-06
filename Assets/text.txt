@@ -1,0 +1,34 @@
+Things:
+    Hand Germ
+    Stinky Germ
+    Human
+
+Hand Germ
+    States:
+        Combining with Hand Germ
+Stinky Germ
+    States:
+        Making stink
+        Combining with Hand Germ
+
+
+Human
+    States:
+        Noticing things like that it is very stinky, or that it has been a while since they've cleaned, or that they are sick
+        Going to bathroom
+        Washing hands
+        Cleaning germs
+        Showering
+        Something at computer
+        Getting food
+        Eating food
+        Drinking drink
+        Sleep (Will inevitably create stink germs)
+        
+Maybe everything from outside has hand germs on it?
+
+When Hand and Stinky germ combine, they create a virus, maybe need two of each to make a virus?
+When Human goes through a space that has hand germs or does something that involves their hands, they get hand germs on their hands
+When Human stays in one spot for long enough or goes to the bathroom, they create stinky germ
+When Human has a lot of bacteria on them, they become sick
+If Human is sick for long enough, they die

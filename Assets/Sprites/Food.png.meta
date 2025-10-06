@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 17c9652755460554fb54c27b5149dad0
+guid: 476094440f720ef4b8ed983b25ff078b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3873087697204469031
-    second: spider_0
+      213: 5362735838549604449
+    second: Food_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -96,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spider_0
+      name: Food_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 41
-        height: 36
+        x: 16
+        y: 14
+        width: 36
+        height: 39
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 72ddec77db8ffb530800000000000000
-      internalID: 3873087697204469031
+      spriteID: 168710905d34c6a40800000000000000
+      internalID: 5362735838549604449
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      spider_0: 3873087697204469031
+      Food_0: 5362735838549604449
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
