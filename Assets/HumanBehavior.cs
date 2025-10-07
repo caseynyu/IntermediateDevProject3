@@ -73,6 +73,7 @@ public class HumanBehavior : MonoBehaviour
                 Desking();
                 break;
         }
+        FindAllFood();
         StepNeeds();
     }
 
@@ -88,27 +89,33 @@ public class HumanBehavior : MonoBehaviour
             transform.position = MoveTowardsTarget();
             if (touchingObj != null)
             {
-                if (touchingObj.tag == "foodstore" && !already)
+                if (touchingObj.name == "Food Store" && !already)
                 {
                     already = true;
                     for (int i = 0; i < 5; i++)
                     {
-                        GameObject newFood = GameObject.Instantiate(foodPrefab, new Vector3(transform.position.x, transform.position.y + (i * 5), transform.position.z), transform.rotation);
+                        GameObject newFood = GameObject.Instantiate(foodPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
                         newFood.transform.parent = gameObject.transform;
                         carriedFood.Add(newFood);
                     }
                     target = table;
                 }
-                if (touchingObj.tag == "table")
+                if (touchingObj.name == "Table" && allFood.Count != 0)
                 {
                     already = false;
-                    for (int i = 0; i < carriedFood.Count; i++)
+                    //Debug.Log(carriedFood.Count);
+                    int count = carriedFood.Count;
+                    for (int i = 0; i < count; i++)
                     {
+                        //Debug.Log(i);
                         carriedFood[0].transform.parent = table.transform;
-                        carriedFood.Clear();
+                        carriedFood[0].transform.position = new Vector3(table.transform.position.x,table.transform.position.y-(.06f*i),table.transform.position.z);
+                        carriedFood.RemoveAt(0);
                     }
+                    carriedFood.Clear();
                     target = null;
                     state = HumanStates.desking;
+                    FindAllFood();
                 }
             }
         }
@@ -120,6 +127,7 @@ public class HumanBehavior : MonoBehaviour
         if (allFood.Count == 0)
         {
             state = HumanStates.buyingfood;
+            Debug.Log("test");
         }
         else
         {
@@ -131,20 +139,18 @@ public class HumanBehavior : MonoBehaviour
             else
             {
                 transform.position = MoveTowardsTarget();
-                if (touchingObj != null)
+                if (transform.position == target.transform.position)
                 {
-                    if (touchingObj.tag == "food")
-                    {
-                        allFood.Remove(touchingObj);
-                        hungerVal = 5;
-                        Destroy(touchingObj);
-                        touchingObj = null;
-                        target = null;
-                        state = HumanStates.desking;
-                    }
+                    allFood.Remove(touchingObj);
+                    hungerVal = 5;
+                    Destroy(target.gameObject);
+                    touchingObj = null;
+                    target = null;
+                    state = HumanStates.desking;
+                    FindAllFood();
                 }
             }
-            
+
         }
     }
 
@@ -210,6 +216,7 @@ public class HumanBehavior : MonoBehaviour
 
     void FindAllFood()
     {
+        allFood.Clear();
         allFood.AddRange(GameObject.FindGameObjectsWithTag("food"));
     }
 
