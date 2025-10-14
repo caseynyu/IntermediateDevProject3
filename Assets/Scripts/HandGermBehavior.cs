@@ -2,15 +2,29 @@ using UnityEngine;
 using System.Collections;
 using System;
 using System.Linq;
+using UnityEngine.AI;
 
 public class HandGermBehavior : MonoBehaviour
 {
     float moveTimeMax;
     float moveTimeStep;
-
+    [SerializeField]
     Transform sprite;
+
+    [SerializeField]
+    float radius = 5f, speed = 1f;
+    Vector3 baseStartPoint;
+    Vector3 destination;
+    Vector3 start;
+    float progress = 0f;
+
     void Start()
     {
+        start = sprite.transform.localPosition;
+        baseStartPoint = sprite.transform.localPosition;
+        progress = 0f;
+
+        
         float moveTimeMax = UnityEngine.Random.Range(3f, 8f);
     }
 
@@ -19,8 +33,33 @@ public class HandGermBehavior : MonoBehaviour
     {
         MoveTimer();
 
-        Vector3 nextPos = NoiseyMove(Time.time);
-        sprite.transform.Translate(nextPos * Time.deltaTime);
+        //Vector3 nextPos = NoiseyMove(Time.time);
+        //sprite.transform.Translate(nextPos * Time.deltaTime);
+
+        bool reached = false;
+        progress += speed * Time.deltaTime;
+
+        if (progress >= 1f)
+        {
+            progress = 1f;
+            reached = true;
+        }
+
+        sprite.transform.localPosition = (destination * progress) + start * (1 - progress);
+
+        if (reached)
+        {
+            start = destination;
+            PickNewRandomDestination();
+            progress = 0f;
+        }
+
+    }
+
+    void PickNewRandomDestination()
+    {
+        Vector3 vector3 = (UnityEngine.Random.insideUnitCircle * radius);
+        destination = vector3 + baseStartPoint;
     }
 
     void MoveTimer()

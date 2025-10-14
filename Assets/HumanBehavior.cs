@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
+using UnityEngine.AI;
 
 public class HumanBehavior : MonoBehaviour
 {
@@ -52,9 +53,14 @@ public class HumanBehavior : MonoBehaviour
 
     bool already = false;
 
+
+    public NavMeshAgent agent;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
         FindAllFood();
     }
 
@@ -86,7 +92,8 @@ public class HumanBehavior : MonoBehaviour
         }
         else
         {
-            transform.position = MoveTowardsTarget();
+            agent.SetDestination(target.position);
+            //transform.position = MoveTowardsTarget();
             if (touchingObj != null)
             {
                 if (touchingObj.name == "Food Store" && !already)
@@ -138,16 +145,23 @@ public class HumanBehavior : MonoBehaviour
             }
             else
             {
-                transform.position = MoveTowardsTarget();
-                if (transform.position == target.transform.position)
+                agent.SetDestination(target.position);
+                //transform.position = MoveTowardsTarget();
+                Debug.Log("Goingtofood");
+                Collider2D[] collidedObjects = Physics2D.OverlapCircleAll(transform.position, .4f);
+                foreach (Collider2D i in collidedObjects)
                 {
-                    allFood.Remove(touchingObj);
-                    hungerVal = 5;
-                    Destroy(target.gameObject);
-                    touchingObj = null;
-                    target = null;
-                    state = HumanStates.desking;
-                    FindAllFood();
+                    if (i == target)
+                    {
+                        Debug.Log("atFood");
+                        allFood.Remove(touchingObj);
+                        hungerVal = 5;
+                        Destroy(target.gameObject);
+                        touchingObj = null;
+                        target = null;
+                        state = HumanStates.desking;
+                        FindAllFood();
+                    }
                 }
             }
 
@@ -158,8 +172,10 @@ public class HumanBehavior : MonoBehaviour
     {
         if (transform.position != desk.position)
         {
+            
             target = desk;
-            transform.position = MoveTowardsTarget();
+            //transform.position = MoveTowardsTarget();
+            agent.SetDestination(target.position);
         }
         else
         {
