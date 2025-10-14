@@ -2,8 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 using UnityEngine.AI;
+using System;
+using Unity.VisualScripting;
 
-public class HumanBehavior : MonoBehaviour
+public class HumanBehavior : EcosystemBaseBehavior
 {
     [SerializeField]
     Transform desk, foodStore, bed, table, sink, toilet, shower;
@@ -22,7 +24,7 @@ public class HumanBehavior : MonoBehaviour
         eating,
         sleeping,
         showering,
-        toileting,
+        bathrooming,
         desking,
         sinking,
         idling,
@@ -33,17 +35,21 @@ public class HumanBehavior : MonoBehaviour
     [SerializeField]
     AnimationCurve idleWalkCurve;
 
-    float hungerVal = 3, toiletVal = 5, showerVal = 30, buyFoodVal = 40;
+    float hungerVal, bathroomVal, showerVal, buyFoodVal;
+
+    [SerializeField]
+    float hungerValMax, bathroomValMax, showerValMax;
 
     List<GameObject> allFood = new List<GameObject>();
 
     List<GameObject> carriedFood = new List<GameObject>();
 
-    [SerializeField]
-    float hungerMaxTime, toiletMaxTime, showerMaxTime, buyFoodMaxTime;
+    //List<GameObject> collidedObjects = new List<GameObject>();
 
-    
-    float hungerStep, toiletStep, showerStep, buyfoodStep;
+    float hungerMaxTime = 1, bathroomMaxTime = 1, showerMaxTime = 1, buyFoodMaxTime = 1;
+
+
+    float hungerStep, bathroomStep, showerStep, buyfoodStep;
 
 
     GameObject touchingObj;
@@ -51,17 +57,35 @@ public class HumanBehavior : MonoBehaviour
     [SerializeField]
     GameObject foodPrefab;
 
-    bool already = false;
+    bool alreadyBoughtFood = false, alreadyAteFood = false, alreadyBathroomed = false;
 
 
     public NavMeshAgent agent;
 
+    float eatingTimeStep, eatingTimeMax, bathroomingTimeStep, bathroomingTimeMax, showeringTimeStep, showeringTimeMax;
+
+    [SerializeField]
+    float eatingTimeRangeMin = 4f, eatingTimeRangeMax = 6f, bathroomingTimeRangeMin, bathroomingTimeRangeMax, showeringTimeRangeMin, showeringTimeRangeMax;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //Sets first random timer maximums
+        eatingTimeMax = UnityEngine.Random.Range(eatingTimeRangeMin, eatingTimeRangeMax);
+        bathroomingTimeMax = UnityEngine.Random.Range(bathroomingTimeRangeMin, bathroomingTimeRangeMax);
+        showeringTimeMax = UnityEngine.Random.Range(showeringTimeRangeMin, showeringTimeRangeMax);
+
+        //Set all values to max
+        hungerVal = hungerValMax;
+        bathroomVal = bathroomValMax;
+        showerVal = showerValMax;
+
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         FindAllFood();
+
+        
+
     }
 
     // Update is called once per frame
@@ -78,9 +102,16 @@ public class HumanBehavior : MonoBehaviour
             case HumanStates.desking:
                 Desking();
                 break;
+            case HumanStates.bathrooming:
+                Bathrooming();
+                break;
+            case HumanStates.showering:
+                Showering();
+                break;
         }
         FindAllFood();
         StepNeeds();
+        GetCollisions();
     }
 
     void BuyingFood()
@@ -96,9 +127,9 @@ public class HumanBehavior : MonoBehaviour
             //transform.position = MoveTowardsTarget();
             if (touchingObj != null)
             {
-                if (touchingObj.name == "Food Store" && !already)
+                if (touchingObj.name == "Food Store" && !alreadyBoughtFood)
                 {
-                    already = true;
+                    alreadyBoughtFood = true;
                     for (int i = 0; i < 5; i++)
                     {
                         GameObject newFood = GameObject.Instantiate(foodPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
@@ -107,16 +138,16 @@ public class HumanBehavior : MonoBehaviour
                     }
                     target = table;
                 }
-                if (touchingObj.name == "Table" && allFood.Count != 0)
+                if (IsNameColliding("Table") && allFood.Count != 0)
                 {
-                    already = false;
+                    alreadyBoughtFood = false;
                     //Debug.Log(carriedFood.Count);
                     int count = carriedFood.Count;
                     for (int i = 0; i < count; i++)
                     {
                         //Debug.Log(i);
                         carriedFood[0].transform.parent = table.transform;
-                        carriedFood[0].transform.position = new Vector3(table.transform.position.x,table.transform.position.y-(.06f*i),table.transform.position.z);
+                        carriedFood[0].transform.position = new Vector3(table.transform.position.x, table.transform.position.y - (.06f * i), table.transform.position.z);
                         carriedFood.RemoveAt(0);
                     }
                     carriedFood.Clear();
@@ -131,48 +162,93 @@ public class HumanBehavior : MonoBehaviour
     void Eating()
     {
 
-        if (allFood.Count == 0)
+        if (allFood.Count == 0 && alreadyAteFood == false)
         {
             state = HumanStates.buyingfood;
-            Debug.Log("test");
+            //Debug.Log("test");
         }
         else
         {
-            if (target == null)
+            target = table;
+            agent.SetDestination(target.position);
+            
+            if (IsNameColliding("Table") && alreadyAteFood == false)
             {
-                target = FindNearest(allFood);
-                lerpTime = 0;
-            }
-            else
-            {
-                agent.SetDestination(target.position);
-                //transform.position = MoveTowardsTarget();
-                Debug.Log("Goingtofood");
-                Collider2D[] collidedObjects = Physics2D.OverlapCircleAll(transform.position, .4f);
-                foreach (Collider2D i in collidedObjects)
+                GameObject chosenFood = FindNearest(allFood).gameObject;
+                if (CheckSpecificColliding(chosenFood))
                 {
-                    if (i == target)
-                    {
-                        Debug.Log("atFood");
-                        allFood.Remove(touchingObj);
-                        hungerVal = 5;
-                        Destroy(target.gameObject);
-                        touchingObj = null;
-                        target = null;
-                        state = HumanStates.desking;
-                        FindAllFood();
-                    }
+                    allFood.Remove(chosenFood);
+                    Destroy(chosenFood);
+                    //touchingObj = null;
+                    //target = null;
+                    alreadyAteFood = true;
+                    eatingTimeStep = 0;
+                    //state = HumanStates.desking;
+                    FindAllFood();
                 }
+            }
+            if (alreadyAteFood == true)
+            {
+                eatingTimeStep += Time.deltaTime;
+
+                if (eatingTimeStep >= eatingTimeMax)
+                {
+                    eatingTimeStep = 0;
+                    hungerVal = hungerValMax;
+                    eatingTimeMax = UnityEngine.Random.Range(4f, 6f);
+                    alreadyAteFood = false;
+                    target = null;
+                    state = HumanStates.desking;
+                }
+
             }
 
         }
     }
 
+    void Bathrooming()
+    {
+        target = toilet;
+        agent.SetDestination(target.position);
+        if (IsNameColliding("Toilet"))
+        {
+            bathroomingTimeStep += Time.deltaTime;
+
+            if (bathroomingTimeStep >= bathroomingTimeMax)
+            {
+                bathroomingTimeStep = 0;
+                bathroomingTimeMax = UnityEngine.Random.Range(bathroomingTimeRangeMin, bathroomingTimeRangeMax);
+                target = null;
+                bathroomVal = bathroomValMax;
+                state = HumanStates.desking;
+            }
+        }
+    }
+
+    void Showering()
+    {
+        target = shower;
+        agent.SetDestination(target.position);
+        if (IsNameColliding("Shower"))
+        {
+            showeringTimeStep += Time.deltaTime;
+
+            if (showeringTimeStep >= showeringTimeMax)
+            {
+                showeringTimeStep = 0;
+                showeringTimeMax = UnityEngine.Random.Range(showeringTimeRangeMin, showeringTimeRangeMax);
+                target = null;
+                showerVal = showerValMax;
+                state = HumanStates.desking;
+                
+            }
+        }
+    }
     void Desking()
     {
         if (transform.position != desk.position)
         {
-            
+
             target = desk;
             //transform.position = MoveTowardsTarget();
             agent.SetDestination(target.position);
@@ -192,7 +268,8 @@ public class HumanBehavior : MonoBehaviour
         return newPos;
     }
 
-    void NewNeedsAction() {
+    void NewNeedsAction()
+    {
         //Hunger first, then toilet, then shower, then buy food
         if (hungerVal <= 0)
         {
@@ -200,33 +277,47 @@ public class HumanBehavior : MonoBehaviour
             state = HumanStates.eating;
             FindAllFood();
         }
-    }
-    Transform FindNearest(List<GameObject> objsToFind)
-    {
-        float minDist = Mathf.Infinity;
-        Transform nearest = null;
-        for (int i = 0; i < objsToFind.Count; i++)
+        if (bathroomVal <= 0)
         {
-            float dist = Vector3.Distance(transform.position, objsToFind[i].transform.position);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                nearest = objsToFind[i].transform;
-            }
+            target = null;
+            state = HumanStates.bathrooming;
         }
-        return nearest;
+        if (showerVal <= 0)
+        {
+            target = null;
+            state = HumanStates.showering;
+        }
     }
     void StepNeeds()
     {
-        hungerStep -= Time.deltaTime;
-        toiletStep -= Time.deltaTime;
-        showerStep -= Time.deltaTime;
+        if (state != HumanStates.eating)
+        {
+            hungerStep -= Time.deltaTime;
+        }
+        if (state != HumanStates.bathrooming)
+        {
+            bathroomStep -= Time.deltaTime;
+        }
+        if (state != HumanStates.showering)
+        {
+            showerStep -= Time.deltaTime;
+        }
         buyfoodStep -= Time.deltaTime;
 
         if (hungerStep <= 0)
         {
             hungerVal--;
             hungerStep = hungerMaxTime;
+        }
+        if (bathroomStep <= 0)
+        {
+            bathroomVal--;
+            bathroomStep = bathroomMaxTime;
+        }
+        if (showerStep <= 0)
+        {
+            showerVal--;
+            showerStep = showerMaxTime;
         }
     }
 
@@ -235,20 +326,5 @@ public class HumanBehavior : MonoBehaviour
         allFood.Clear();
         allFood.AddRange(GameObject.FindGameObjectsWithTag("food"));
     }
-
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col != null)
-        {
-            touchingObj = col.gameObject;
-        }
-
-    }
-    void OnTriggerExit2D(Collider2D col)
-    {
-        if (col != null)
-        {
-            if (col.gameObject == touchingObj) touchingObj = null;
-        }
-    }
 }
+

@@ -1,13 +1,32 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.AI;
+using Unity.VisualScripting;
+using Unity.VisualScripting.ReorderableList;
 
 public class HandGermBehavior : MonoBehaviour
 {
+
+    enum HandGermStates
+    {
+        moving,
+        combining,
+        infecting,
+        poweringUp,
+        idling,
+    }
+
+    HandGermStates state = HandGermStates.idling;
+
+    public float potency = 0;
+
     float moveTimeMax;
     float moveTimeStep;
+
+    [SerializeField]
+    float moveVal;
     [SerializeField]
     Transform sprite;
 
@@ -17,6 +36,11 @@ public class HandGermBehavior : MonoBehaviour
     Vector3 destination;
     Vector3 start;
     float progress = 0f;
+
+    [SerializeField]
+    float moveTimeRangeMin, moveTimeRangeMax;
+
+    List<GameObject> collidedObjects = new List<GameObject>();
 
     void Start()
     {
@@ -31,11 +55,35 @@ public class HandGermBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveTimer();
+        switch (state)
+        {
+            case HandGermStates.idling:
+                Idling();
+                break;
+            case HandGermStates.moving:
+                Moving();
+                break;
+        }
+        StepNeeds();
+        RandomMoveAnimation();        
 
-        //Vector3 nextPos = NoiseyMove(Time.time);
-        //sprite.transform.Translate(nextPos * Time.deltaTime);
+    }
 
+    void Idling()
+    {
+        RandomMoveAnimation();
+        NewNeedsAction();
+    }
+
+    void NewNeedsAction()
+    {
+        if (moveVal <= 0) {
+            state = HandGermStates.moving;
+        }
+    }
+
+    void RandomMoveAnimation()
+    {
         bool reached = false;
         progress += speed * Time.deltaTime;
 
@@ -53,33 +101,34 @@ public class HandGermBehavior : MonoBehaviour
             PickNewRandomDestination();
             progress = 0f;
         }
-
     }
+
+    void Moving()
+    {
+        moveTimeMax = UnityEngine.Random.Range(moveTimeRangeMin, moveTimeRangeMax);
+        moveTimeStep = 0;
+        GameObject[] tempCollidedObjects = collidedObjects.ToArray();
+        tempCollidedObjects = ShuffleArray(tempCollidedObjects);
+        foreach (GameObject i in collidedObjects)
+        {
+            if (i.CompareTag("handgermspot") && i.transform != transform.parent)
+            {
+                MoveToAnother(i.transform);
+                break;
+            }
+        }
+    }
+
+    void StepNeeds()
+    {
+        moveTimeStep -= Time.deltaTime;
+    }
+
 
     void PickNewRandomDestination()
     {
         Vector3 vector3 = (UnityEngine.Random.insideUnitCircle * radius);
         destination = vector3 + baseStartPoint;
-    }
-
-    void MoveTimer()
-    {
-        moveTimeStep -= Time.deltaTime;
-
-        if (moveTimeStep <= 0)
-        {
-            moveTimeMax = UnityEngine.Random.Range(3f, 8f);
-            moveTimeStep = moveTimeMax;
-            Collider2D[] collidedObjects = Physics2D.OverlapCircleAll(transform.position, .7f);
-            collidedObjects = ShuffleArray(collidedObjects);
-            foreach (Collider2D i in collidedObjects)
-            {
-                if (i.CompareTag("handgermspot") && i.transform != transform.parent)
-                {
-                    MoveToAnother(i.transform);
-                }
-            }
-        }
     }
 
     void MoveToAnother(Transform parentToTransformTo)
@@ -92,15 +141,5 @@ public class HandGermBehavior : MonoBehaviour
     {
         System.Random random = new System.Random();
         return array.OrderBy(x => random.Next()).ToArray();
-    }
-    
-    Vector3 NoiseyMove(float time)
-    {
-        float x = Mathf.PerlinNoise1D(time * UnityEngine.Random.Range(-2,2));
-        x = x * UnityEngine.Random.Range(-1, 2);
-        float y = Mathf.PerlinNoise1D(time * UnityEngine.Random.Range(-1,2));
-        y = y * UnityEngine.Random.Range(-1, 2);
-        Vector3 nextPos = new Vector3(x, y);
-        return Vector3.Normalize(nextPos);
     }
 }

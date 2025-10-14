@@ -12,6 +12,7 @@ Stinky Germ
         Combining with Hand Germ
 
 
+
 Human
     States:
         Noticing things like that it is very stinky, or that it has been a while since they've cleaned, or that they are sick

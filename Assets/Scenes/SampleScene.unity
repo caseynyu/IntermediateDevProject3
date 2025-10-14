@@ -215,9 +215,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 20056449}
+  - component: {fileID: 20056450}
   m_Layer: 0
   m_Name: Toilet
-  m_TagString: Untagged
+  m_TagString: handgermspot
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -237,6 +238,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &20056450
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20056448}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.005803108, y: -0.0116068125}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.59376144, y: 0.38483977}
+  m_EdgeRadius: 0
 --- !u!1 &132241345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,13 +1366,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -2770077772987419621, guid: 85b99c65d5382d74ab9727b141d51058, type: 3}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 141422635880768861, guid: 949348afcd99ca446b779dc416ec7fd0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.47, y: 0.51}
+  m_Size: {x: 0.54, y: 0.57}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1355,9 +1402,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 869730549}
+  - component: {fileID: 869730550}
   m_Layer: 0
   m_Name: Shower
-  m_TagString: Untagged
+  m_TagString: handgermspot
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1377,6 +1425,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &869730550
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869730548}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.018627644, y: 0.0037255287}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.70940876, y: 0.48587704}
+  m_EdgeRadius: 0
 --- !u!1 &939319653
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,6 +2070,7 @@ GameObject:
   - component: {fileID: 2057113387}
   - component: {fileID: 2057113386}
   - component: {fileID: 2057113388}
+  - component: {fileID: 2057113389}
   m_Layer: 0
   m_Name: Hand Germ
   m_TagString: Untagged
@@ -1995,9 +2090,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3a1b529ba2f274c9343d36e57b5acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  potency: 0
+  moveVal: 0
   sprite: {fileID: 768777073}
   radius: 0.25
   speed: 1
+  moveTimeRangeMin: 0
+  moveTimeRangeMax: 0
 --- !u!4 &2057113387
 Transform:
   m_ObjectHideFlags: 0
@@ -2007,7 +2106,7 @@ Transform:
   m_GameObject: {fileID: 2057113385}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.382, y: 1.469, z: 0}
+  m_LocalPosition: {x: -0.467, y: 0.848, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2060,6 +2159,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.46009064, y: 0.5070393}
   m_EdgeRadius: 0
+--- !u!95 &2057113389
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057113385}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0f3935f7e6d6b8d479cc805edef3ad69, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2130655802
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,7 +2276,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2634799857069279492, guid: a0df9f4937fa9bf4caca8962ddf9253d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2195,6 +2316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3eedd524894b34ab7311d9f759c59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collidedObjects: []
   desk: {fileID: 440159969}
   foodStore: {fileID: 2034194801}
   bed: {fileID: 190003759}
@@ -2227,12 +2349,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hungerMaxTime: 2
-  toiletMaxTime: 0
-  showerMaxTime: 0
-  buyFoodMaxTime: 0
+  hungerValMax: 10
+  bathroomValMax: 18
+  showerValMax: 45
   foodPrefab: {fileID: 6066857763633918547, guid: 3bdbdf432e8b64e42a405ac245859e3c, type: 3}
   agent: {fileID: 2136134297}
+  eatingTimeRangeMin: 3
+  eatingTimeRangeMax: 5
+  bathroomingTimeRangeMin: 6
+  bathroomingTimeRangeMax: 8
+  showeringTimeRangeMin: 10
+  showeringTimeRangeMax: 15
 --- !u!50 &2136134295
 Rigidbody2D:
   serializedVersion: 5

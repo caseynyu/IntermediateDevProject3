@@ -1,7 +1,16 @@
 fileFormatVersion: 2
-guid: 85b99c65d5382d74ab9727b141d51058
+guid: 949348afcd99ca446b779dc416ec7fd0
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 141422635880768861
+    second: Hand Germ-Sheet_0
+  - first:
+      213: -1050343930167880948
+    second: Hand Germ-Sheet_1
+  - first:
+      213: 7472858747186181883
+    second: Hand Germ-Sheet_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,23 +106,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hand Germ_0
+      name: Hand Germ-Sheet_0
       rect:
         serializedVersion: 2
         x: 4
-        y: 13
-        width: 47
-        height: 51
+        y: 7
+        width: 54
+        height: 57
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b1431e421f4be89d0800000000000000
-      internalID: -2770077772987419621
+      spriteID: d556fd6532f66f100800000000000000
+      internalID: 141422635880768861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hand Germ-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 7
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c031b5ea2cd6c61f0800000000000000
+      internalID: -1050343930167880948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hand Germ-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 7
+        width: 54
+        height: 57
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf6f3ba007de4b760800000000000000
+      internalID: 7472858747186181883
       vertices: []
       indices: 
       edges: []
@@ -122,7 +175,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7683d6dced1a5f1459ca8526e7af5645
     internalID: 0
     vertices: []
     indices: 
@@ -132,7 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Hand Germ_0: -2770077772987419621
+      Hand Germ-Sheet_0: 141422635880768861
+      Hand Germ-Sheet_1: -1050343930167880948
+      Hand Germ-Sheet_2: 7472858747186181883
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
