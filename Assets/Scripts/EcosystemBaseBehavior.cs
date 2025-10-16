@@ -43,7 +43,7 @@ public class EcosystemBaseBehavior : MonoBehaviour
         }
         return false;
     }
-    
+
     public bool IsTagColliding(string tagString)
     {
         foreach (GameObject i in collidedObjects)
@@ -54,6 +54,28 @@ public class EcosystemBaseBehavior : MonoBehaviour
             }
         }
         return false;
+    }
+    public GameObject GetObjectWithName(string nameString)
+    {
+        foreach (GameObject i in collidedObjects)
+        {
+            if (i.name == nameString)
+            {
+                return i;
+            }
+        }
+        return null;
+    }
+    public GameObject GetObjectWithTag(string tagString)
+    {
+        foreach (GameObject i in collidedObjects)
+        {
+            if (i.CompareTag(tagString)&& i != this.gameObject)
+            {
+                return i;
+            }
+        }
+        return null;
     }
 
     public bool CheckSpecificColliding(GameObject specificObject)

@@ -8,6 +8,8 @@ TagManager:
   - foodstore
   - table
   - handgermspot
+  - handgerm
+  - stinkgerm
   layers:
   - Default
   - TransparentFX

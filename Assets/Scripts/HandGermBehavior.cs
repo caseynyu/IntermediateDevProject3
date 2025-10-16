@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.AI;
-using Unity.VisualScripting;
-using Unity.VisualScripting.ReorderableList;
 
-public class HandGermBehavior : MonoBehaviour
+public class HandGermBehavior : EcosystemBaseBehavior
 {
 
     enum HandGermStates
@@ -20,13 +18,8 @@ public class HandGermBehavior : MonoBehaviour
 
     HandGermStates state = HandGermStates.idling;
 
-    public float potency = 0;
-
-    float moveTimeMax;
-    float moveTimeStep;
-
-    [SerializeField]
-    float moveVal;
+    float potency = 1;
+    float moveTimeMax, moveTimeStep, powerUpTimeMax, powerUpTimeStep;
     [SerializeField]
     Transform sprite;
 
@@ -35,12 +28,14 @@ public class HandGermBehavior : MonoBehaviour
     Vector3 baseStartPoint;
     Vector3 destination;
     Vector3 start;
+
+    bool willMoveAtNextOpportunity = false;
+
     float progress = 0f;
 
     [SerializeField]
-    float moveTimeRangeMin, moveTimeRangeMax;
+    float moveTimeRangeMin, moveTimeRangeMax, powerUpTimeRangeMin, powerUpTimeRangeMax;
 
-    List<GameObject> collidedObjects = new List<GameObject>();
 
     void Start()
     {
@@ -48,8 +43,11 @@ public class HandGermBehavior : MonoBehaviour
         baseStartPoint = sprite.transform.localPosition;
         progress = 0f;
 
-        
-        float moveTimeMax = UnityEngine.Random.Range(3f, 8f);
+
+        moveTimeMax = UnityEngine.Random.Range(moveTimeRangeMin, moveTimeRangeMax);
+        moveTimeStep = moveTimeMax;
+        powerUpTimeMax = UnityEngine.Random.Range(powerUpTimeRangeMin, powerUpTimeRangeMax);
+        powerUpTimeStep = powerUpTimeMax;
     }
 
     // Update is called once per frame
@@ -63,10 +61,12 @@ public class HandGermBehavior : MonoBehaviour
             case HandGermStates.moving:
                 Moving();
                 break;
+            case HandGermStates.poweringUp:
+                PoweringUp();
+                break;
         }
         StepNeeds();
-        RandomMoveAnimation();        
-
+        GetCollisions();
     }
 
     void Idling()
@@ -77,8 +77,13 @@ public class HandGermBehavior : MonoBehaviour
 
     void NewNeedsAction()
     {
-        if (moveVal <= 0) {
+        if (moveTimeStep <= 0)
+        {
             state = HandGermStates.moving;
+        }
+        if(powerUpTimeStep <= 0 && potency < 3)
+        {
+            state = HandGermStates.poweringUp;
         }
     }
 
@@ -106,22 +111,34 @@ public class HandGermBehavior : MonoBehaviour
     void Moving()
     {
         moveTimeMax = UnityEngine.Random.Range(moveTimeRangeMin, moveTimeRangeMax);
-        moveTimeStep = 0;
+        moveTimeStep = moveTimeMax;
         GameObject[] tempCollidedObjects = collidedObjects.ToArray();
         tempCollidedObjects = ShuffleArray(tempCollidedObjects);
-        foreach (GameObject i in collidedObjects)
+        foreach (GameObject i in tempCollidedObjects)
         {
             if (i.CompareTag("handgermspot") && i.transform != transform.parent)
             {
                 MoveToAnother(i.transform);
-                break;
+                state = HandGermStates.idling;
+                return;
             }
         }
+        state = HandGermStates.idling;
+    }
+
+    void PoweringUp()
+    {
+        powerUpTimeMax = UnityEngine.Random.Range(powerUpTimeRangeMin, powerUpTimeRangeMax);
+        powerUpTimeStep = powerUpTimeMax;
+        potency++;
+        sprite.localScale = new Vector3(1 + (potency/4), 1 + (potency/4), sprite.localScale.z);
+        state = HandGermStates.idling;
     }
 
     void StepNeeds()
     {
         moveTimeStep -= Time.deltaTime;
+        powerUpTimeStep -= Time.deltaTime;
     }
 
 

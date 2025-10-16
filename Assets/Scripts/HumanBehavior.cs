@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UIElements;
 using UnityEngine.AI;
 using System;
-using Unity.VisualScripting;
 
 public class HumanBehavior : EcosystemBaseBehavior
 {
@@ -52,10 +51,8 @@ public class HumanBehavior : EcosystemBaseBehavior
     float hungerStep, bathroomStep, showerStep, buyfoodStep;
 
 
-    GameObject touchingObj;
-
     [SerializeField]
-    GameObject foodPrefab;
+    GameObject foodPrefab, handGermPrefab;
 
     bool alreadyBoughtFood = false, alreadyAteFood = false, alreadyBathroomed = false;
 
@@ -125,9 +122,7 @@ public class HumanBehavior : EcosystemBaseBehavior
         {
             agent.SetDestination(target.position);
             //transform.position = MoveTowardsTarget();
-            if (touchingObj != null)
-            {
-                if (touchingObj.name == "Food Store" && !alreadyBoughtFood)
+                if (IsNameColliding("Food Store") && !alreadyBoughtFood)
                 {
                     alreadyBoughtFood = true;
                     for (int i = 0; i < 5; i++)
@@ -135,6 +130,11 @@ public class HumanBehavior : EcosystemBaseBehavior
                         GameObject newFood = GameObject.Instantiate(foodPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
                         newFood.transform.parent = gameObject.transform;
                         carriedFood.Add(newFood);
+                    }
+                    for (int i = 0; i<2; i++)
+                    {
+                        GameObject newHandGerm = GameObject.Instantiate(handGermPrefab, transform.position, transform.rotation);
+                        newHandGerm.transform.parent = gameObject.transform;
                     }
                     target = table;
                 }
@@ -155,7 +155,6 @@ public class HumanBehavior : EcosystemBaseBehavior
                     state = HumanStates.desking;
                     FindAllFood();
                 }
-            }
         }
     }
 
