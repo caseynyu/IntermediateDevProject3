@@ -10,28 +10,15 @@ public class HandGermBehavior : EcosystemBaseBehavior
     enum HandGermStates
     {
         moving,
-        combining,
-        infecting,
         poweringUp,
         idling,
     }
 
     HandGermStates state = HandGermStates.idling;
 
-    float potency = 1;
+    public float potency = 1;
     float moveTimeMax, moveTimeStep, powerUpTimeMax, powerUpTimeStep;
-    [SerializeField]
-    Transform sprite;
-
-    [SerializeField]
-    float radius = 5f, speed = 1f;
-    Vector3 baseStartPoint;
-    Vector3 destination;
-    Vector3 start;
-
-    bool willMoveAtNextOpportunity = false;
-
-    float progress = 0f;
+    
 
     [SerializeField]
     float moveTimeRangeMin, moveTimeRangeMax, powerUpTimeRangeMin, powerUpTimeRangeMax;
@@ -39,6 +26,7 @@ public class HandGermBehavior : EcosystemBaseBehavior
 
     void Start()
     {
+        sprite = gameObject.GetComponentInChildren<SpriteRenderer>().gameObject.transform;
         start = sprite.transform.localPosition;
         baseStartPoint = sprite.transform.localPosition;
         progress = 0f;
@@ -87,27 +75,6 @@ public class HandGermBehavior : EcosystemBaseBehavior
         }
     }
 
-    void RandomMoveAnimation()
-    {
-        bool reached = false;
-        progress += speed * Time.deltaTime;
-
-        if (progress >= 1f)
-        {
-            progress = 1f;
-            reached = true;
-        }
-
-        sprite.transform.localPosition = (destination * progress) + start * (1 - progress);
-
-        if (reached)
-        {
-            start = destination;
-            PickNewRandomDestination();
-            progress = 0f;
-        }
-    }
-
     void Moving()
     {
         moveTimeMax = UnityEngine.Random.Range(moveTimeRangeMin, moveTimeRangeMax);
@@ -139,13 +106,6 @@ public class HandGermBehavior : EcosystemBaseBehavior
     {
         moveTimeStep -= Time.deltaTime;
         powerUpTimeStep -= Time.deltaTime;
-    }
-
-
-    void PickNewRandomDestination()
-    {
-        Vector3 vector3 = (UnityEngine.Random.insideUnitCircle * radius);
-        destination = vector3 + baseStartPoint;
     }
 
     void MoveToAnother(Transform parentToTransformTo)

@@ -33,3 +33,13 @@ When Human goes through a space that has hand germs or does something that invol
 When Human stays in one spot for long enough or goes to the bathroom, they create stinky germ
 When Human has a lot of bacteria on them, they become sick
 If Human is sick for long enough, they die
+
+
+Still need to do:
+
+Stink Germ
+    
+
+Hand Germ
+
+Human

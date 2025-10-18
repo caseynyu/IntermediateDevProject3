@@ -10,6 +10,8 @@ TagManager:
   - handgermspot
   - handgerm
   - stinkgerm
+  - virus
+  - person
   layers:
   - Default
   - TransparentFX

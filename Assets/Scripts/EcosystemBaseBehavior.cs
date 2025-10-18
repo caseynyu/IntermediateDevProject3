@@ -3,9 +3,25 @@ using System.Collections.Generic;
 
 public class EcosystemBaseBehavior : MonoBehaviour
 {
-
     public List<GameObject> collidedObjects = new List<GameObject>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
+    
+    [HideInInspector]
+    public Transform sprite;
+
+    [SerializeField]
+    public float randomMoveRadius, randomMoveSpeed;
+    [HideInInspector]
+    public Vector3 baseStartPoint;
+    [HideInInspector]
+    public Vector3 destination;
+    [HideInInspector]
+    public Vector3 start;
+    [HideInInspector]
+
+    public float progress = 0f;
+
+    public float searchRadius = 2.5f;
 
    public Transform FindNearest(List<GameObject> objsToFind)
     {
@@ -66,6 +82,8 @@ public class EcosystemBaseBehavior : MonoBehaviour
         }
         return null;
     }
+
+    
     public GameObject GetObjectWithTag(string tagString)
     {
         foreach (GameObject i in collidedObjects)
@@ -88,5 +106,43 @@ public class EcosystemBaseBehavior : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void GetWideCollisions()
+    {
+        collidedObjects.Clear();
+        Collider2D[] collidingObjectsCircle = Physics2D.OverlapCircleAll(transform.position, searchRadius);
+        foreach (Collider2D i in collidingObjectsCircle)
+        {
+            collidedObjects.Add(i.gameObject);
+        }
+    }
+
+
+    public void RandomMoveAnimation()
+    {
+        bool reached = false;
+        progress += randomMoveSpeed * Time.deltaTime;
+
+        if (progress >= 1f)
+        {
+            progress = 1f;
+            reached = true;
+        }
+
+        sprite.transform.localPosition = (destination * progress) + start * (1 - progress);
+
+        if (reached)
+        {
+            start = destination;
+            PickNewRandomDestination();
+            progress = 0f;
+        }
+    }
+
+    public void PickNewRandomDestination()
+    {
+        Vector3 vector3 = (UnityEngine.Random.insideUnitCircle * randomMoveRadius);
+        destination = vector3 + baseStartPoint;
     }
 }

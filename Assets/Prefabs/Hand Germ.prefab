@@ -49,12 +49,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collidedObjects: []
   sprite: {fileID: 3075433735974746369}
-  radius: 0.25
-  speed: 1
+  randomMoveRadius: 0.25
+  randomMoveSpeed: 1
+  baseStartPoint: {x: 0, y: 0, z: 0}
+  destination: {x: 0, y: 0, z: 0}
+  start: {x: 0, y: 0, z: 0}
+  progress: 0
+  searchRadius: 2.5
+  potency: 1
   moveTimeRangeMin: 3
   moveTimeRangeMax: 5
   powerUpTimeRangeMin: 30
-  powerUpTimeRangeMax: 70
+  powerUpTimeRangeMax: 90
 --- !u!61 &8371827924040084643
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -198,7 +204,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 141422635880768861, guid: 949348afcd99ca446b779dc416ec7fd0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
